@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
   flexItem: {
     paddingBottom: 10,
-    paddingLeft: 20,
+    paddingLeft: 10,
   },
   // ...
 });

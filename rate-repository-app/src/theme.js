@@ -5,6 +5,7 @@ const theme = {
     primary: '#0366d6',
     backgroundColor: '#24292e',
     headerColor: 'white',
+    fillerColor: 'grey',
   },
   fontSizes: {
     body: 14,
