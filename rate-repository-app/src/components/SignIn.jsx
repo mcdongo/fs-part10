@@ -19,6 +19,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 4
   },
+  errorBorder: {
+    borderColor: theme.colors.errorText,
+    borderWidth: 1
+  },
   flexItem: {
     flexGrow: 0,
     paddingTop: 10
@@ -64,7 +68,7 @@ const SignInForm = ({ onSubmit }) => {
           placeholder='username'
           value={formik.values.username}
           onChangeText={formik.handleChange('username')}
-          style={styles.textInputBox}
+          style={[styles.textInputBox, formik.touched.username && formik.errors.username && styles.errorBorder]}
         />
         {formik.touched.username && formik.errors.username && (
           <Text color={'error'}>{formik.errors.username}</Text>
@@ -77,7 +81,7 @@ const SignInForm = ({ onSubmit }) => {
           value={formik.values.password}
           onChangeText={formik.handleChange('password')}
           secureTextEntry
-          style={styles.textInputBox}
+          style={[styles.textInputBox, formik.touched.password && formik.errors.password && styles.errorBorder]}
         />
         {formik.touched.password && formik.errors.password && (
           <Text color={'error'}>{formik.errors.password}</Text>
