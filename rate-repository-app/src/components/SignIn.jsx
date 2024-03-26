@@ -1,5 +1,7 @@
 import { View, TextInput, Pressable, StyleSheet } from 'react-native';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
+
 import Text from './Text';
 import theme from '../theme';
 
@@ -37,11 +39,22 @@ const initialValues = {
   password: ''
 };
 
+const validationSchema = yup.object().shape({
+  username: yup
+    .string()
+    .required('Username is required'),
+  password: yup
+    .string()
+    .required('Password is required'),
+})
+
 const SignInForm = ({ onSubmit }) => {
   const formik = useFormik({
     initialValues,
+    validationSchema,
     onSubmit,
   });
+
 
 
   return (
@@ -53,6 +66,9 @@ const SignInForm = ({ onSubmit }) => {
           onChangeText={formik.handleChange('username')}
           style={styles.textInputBox}
         />
+        {formik.touched.username && formik.errors.username && (
+          <Text color={'error'}>{formik.errors.username}</Text>
+        )}
       </View>
 
       <View style={styles.flexItem}>
@@ -62,7 +78,10 @@ const SignInForm = ({ onSubmit }) => {
           onChangeText={formik.handleChange('password')}
           secureTextEntry
           style={styles.textInputBox}
-        />        
+        />
+        {formik.touched.password && formik.errors.password && (
+          <Text color={'error'}>{formik.errors.password}</Text>
+        )}
       </View>
 
       <View style={styles.flexItem}>

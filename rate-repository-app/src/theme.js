@@ -6,6 +6,7 @@ const theme = {
     backgroundColor: '#24292e',
     headerColor: 'white',
     fillerColor: 'grey',
+    errorText: '#d73a4a',
   },
   fontSizes: {
     body: 14,
