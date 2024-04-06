@@ -52,7 +52,7 @@ const RepositoryItem = ({ item }) => {
   const reviews = item.reviewCount > 1000 ? `${(item.reviewCount / 1000).toFixed(1)}k` : item.reviewCount;
 
   return (
-    <View style={styles.container}>
+    <View testID="repositoryItem" style={styles.container}>
       <View style={styles.flexContainerHorizontal}>
         <View style={styles.flexItemB}>
           <Image
