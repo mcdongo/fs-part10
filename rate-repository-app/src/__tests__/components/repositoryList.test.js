@@ -58,7 +58,6 @@ describe('RepositoryList', () => {
       expect(firstRepositoryItem).toHaveTextContent('88');
       expect(firstRepositoryItem).toHaveTextContent('3');
 
-      screen.debug();
       expect(secondRepositoryItem).toHaveTextContent('async-library/react-async');
       expect(secondRepositoryItem).toHaveTextContent('Flexible promise-based React data loader');
       expect(secondRepositoryItem).toHaveTextContent('JavaScript');
