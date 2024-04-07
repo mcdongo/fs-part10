@@ -1,4 +1,8 @@
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Pressable } from 'react-native';
+import { useParams } from 'react-router-native';
+import * as Linking from 'expo-linking';
+import { useSingleRepository } from '../hooks/useRepositories';
+
 import Text from './Text';
 import theme from '../theme';
 
@@ -15,7 +19,8 @@ const styles = StyleSheet.create({
   flexContainerFooter: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    paddingBottom: 10
   },
   flexItemA: {
     flexGrow: 0,
@@ -42,10 +47,17 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 5,
     alignSelf: 'flex-start'
+  },
+  openButton: {
+    backgroundColor: theme.colors.primary,
+    borderRadius: 2,
+    padding: 5,
+    alignItems: 'center',
+    width: '90%'
   }
 })
 
-const RepositoryItem = ({ item }) => {
+const RepositoryItem = ({ item, singleEntry }) => {
 
   const stars = item.stargazersCount > 1000 ? `${(item.stargazersCount / 1000).toFixed(1)}k` : item.stargazersCount;
   const forks = item.forksCount > 1000 ? `${(item.forksCount / 1000).toFixed(1)}k` : item.forksCount;
@@ -92,10 +104,29 @@ const RepositoryItem = ({ item }) => {
           <View style={styles.flexItemA}><Text fontWeight={'bold'}>{item.ratingAverage}</Text></View>
           <View style={styles.flexItemA}><Text>rating</Text></View>
         </View>
-
       </View>
+      {singleEntry &&
+      <Pressable onPress={() => Linking.openURL(item.url)}>
+          <View style={styles.flexContainerFooter}>
+            <View style={styles.openButton} >
+              <Text fontWeight={'bold'} color={'header'}>Open in Github</Text>
+            </View>
+          </View>
+      </Pressable>
+      }
     </View>
   );
 };
 
 export default RepositoryItem
+
+export const SingleRepositoryItem = () => {
+  const { id } = useParams();
+  const { repository, loading } = useSingleRepository(id);
+
+  if (loading) {
+    return;
+  }
+
+  return <RepositoryItem item={repository} singleEntry={true} />;
+}

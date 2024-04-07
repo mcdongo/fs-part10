@@ -36,11 +36,11 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView horizontal style={styles.flexItem}>
         <View style={styles.flexItem}>
-          <AppBarTab name={'Repositories'} link={'/'} purpose={'link'}/>
+          <AppBarTab name={'Repositories'} link={'/'} />
         </View>
         <View style={styles.flexItem}>
           {!user &&
-          <AppBarTab name={'Sign in'} link={'/login'} purpose={'link'} />
+          <AppBarTab name={'Sign in'} link={'/login'} />
           }
           {user &&
           <Pressable
