@@ -6,6 +6,7 @@ import Constants from 'expo-constants';
 import AppBarTab from './AppBarTab';
 import theme from '../theme';
 import Text from './Text';
+import { useNavigate } from 'react-router-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,12 +25,14 @@ const styles = StyleSheet.create({
 
 const AppBar = () => {
   const { user } = useVerifyAuthorization();
+  const navigate = useNavigate();
   const authStorage = useAuthStorage();
   const apolloClient = useApolloClient();
 
   const logOut = async () => {
     await authStorage.removeAccessToken();
     apolloClient.resetStore();
+    navigate('/');
   }
 
   return (
@@ -38,6 +41,11 @@ const AppBar = () => {
         <View style={styles.flexItem}>
           <AppBarTab name={'Repositories'} link={'/'} />
         </View>
+        {user &&
+          <View style={styles.flexItem}>
+            <AppBarTab name={'Create a review'} link={'/createreview'} />
+          </View>
+        }
         <View style={styles.flexItem}>
           {!user &&
           <AppBarTab name={'Sign in'} link={'/login'} />
