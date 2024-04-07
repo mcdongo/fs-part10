@@ -58,6 +58,11 @@ const AppBar = () => {
           </Pressable>
           }
         </View>
+        <View style={styles.flexItem}>
+          {!user &&
+          <AppBarTab name={'Sign up'} link={'/register'} />
+          }
+        </View>
       </ScrollView>
     </View>
   );
