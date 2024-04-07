@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, Pressable } from 'react-native';
+import { View, Image, StyleSheet, Pressable, FlatList } from 'react-native';
 import { useParams } from 'react-router-native';
 import * as Linking from 'expo-linking';
 import { useSingleRepository } from '../hooks/useRepositories';
@@ -14,7 +14,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    paddingLeft: 20
+    paddingLeft: 20,
+    paddingTop: 5,
+    paddingBottom: 5
   },
   flexContainerFooter: {
     display: 'flex',
@@ -54,10 +56,23 @@ const styles = StyleSheet.create({
     padding: 5,
     alignItems: 'center',
     width: '90%'
-  }
+  },
+  scoreCircle: {
+    width: 45,
+    height: 45,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: theme.colors.primary
+  },
+  separator: {
+    height: 10,
+    backgroundColor: theme.colors.fillerColor
+  },
 })
 
-const RepositoryItem = ({ item, singleEntry }) => {
+const RepositoryInfo = ({ item, singleEntry }) => {
 
   const stars = item.stargazersCount > 1000 ? `${(item.stargazersCount / 1000).toFixed(1)}k` : item.stargazersCount;
   const forks = item.forksCount > 1000 ? `${(item.forksCount / 1000).toFixed(1)}k` : item.forksCount;
@@ -118,7 +133,34 @@ const RepositoryItem = ({ item, singleEntry }) => {
   );
 };
 
-export default RepositoryItem
+export default RepositoryInfo
+
+const ReviewItem = ({ review }) => {
+  const createdAt = new Date(review.createdAt);
+  const newDateString = `${createdAt.getDate()}.${createdAt.getMonth() + 1}.${createdAt.getFullYear()}`;
+  return (
+    <View style={styles.flexContainerHorizontal}>
+      <View style={styles.flexItemB}>
+        <View style={styles.scoreCircle}>
+          <Text fontWeight={'bold'} color={'primary'}>{review.rating}</Text>
+        </View>
+      </View>
+      <View style={styles.flexContainerVertical}>
+        <View style={styles.flexItemB}>
+          <Text fontWeight={'bold'}>{review.user.username}</Text>
+        </View>
+        <View style={styles.flexItemB}>
+          <Text>{newDateString}</Text>
+        </View>
+        <View style={styles.flexItemB}>
+          <Text>{review.text}</Text>
+        </View>
+      </View>
+    </View>
+  )
+}
+
+const ItemSeparator = () => <View style={styles.separator} />;
 
 export const SingleRepositoryItem = () => {
   const { id } = useParams();
@@ -127,6 +169,19 @@ export const SingleRepositoryItem = () => {
   if (loading) {
     return;
   }
+  
+  const reviewNodes = repository
+    ? repository.reviews.edges.map(edge => edge.node)
+    : [];
 
-  return <RepositoryItem item={repository} singleEntry={true} />;
+  return (
+    <FlatList
+      data={reviewNodes}
+      renderItem={({ item }) => <ReviewItem review={item} />}
+      keyExtractor={({ id }) => id}
+      ItemSeparatorComponent={ItemSeparator}
+      ListHeaderComponent={() => <RepositoryInfo item={repository} />}
+    />
+  )
+  
 }
