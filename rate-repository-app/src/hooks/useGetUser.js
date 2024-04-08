@@ -1,14 +1,17 @@
 import { useQuery } from '@apollo/client';
 
-import { VERIFY_AUTHENTICATION } from '../graphql/queries';
+import { GET_USER } from '../graphql/queries';
 import useAuthStorage from './useAuthStorage';
 
-const useVerifyAuthorization = () => {
+const useGetUser = (includeReviews = false) => {
   const authStorage = useAuthStorage();
-  const { data, error, loading } = useQuery(VERIFY_AUTHENTICATION, {
+  const { data, error, loading } = useQuery(GET_USER, {
     fetchPolicy: 'cache-and-network',
     headers: {
       'Authorization': `Bearer ${authStorage.getAccessToken()}`
+    },
+    variables: {
+      includeReviews
     }
   });
 
@@ -19,4 +22,4 @@ const useVerifyAuthorization = () => {
   return { user, loading, error };
 };
 
-export default useVerifyAuthorization;
+export default useGetUser;

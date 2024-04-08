@@ -52,11 +52,24 @@ query Repository($repositoryId: ID!) {
 }
 `
 
-export const VERIFY_AUTHENTICATION = gql`
-  query Me {
-    me {
-      id
-      username
+export const GET_USER = gql`
+query getCurrentUser($includeReviews: Boolean = false) {
+  me {
+    id
+    username
+    reviews @include(if: $includeReviews) {
+      edges {
+        node {
+          createdAt
+          rating
+          id
+          text
+          repository {
+            fullName
+          }
+        }
+      }
     }
   }
+}
 `;

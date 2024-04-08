@@ -1,5 +1,5 @@
 import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
-import useVerifyAuthorization from '../hooks/useVerifyAuthorization';
+import useGetUser from '../hooks/useGetUser';
 import useAuthStorage from '../hooks/useAuthStorage';
 import { useApolloClient } from '@apollo/client';
 import Constants from 'expo-constants';
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
-  const { user } = useVerifyAuthorization();
+  const { user } = useGetUser();
   const navigate = useNavigate();
   const authStorage = useAuthStorage();
   const apolloClient = useApolloClient();
@@ -42,27 +42,36 @@ const AppBar = () => {
           <AppBarTab name={'Repositories'} link={'/'} />
         </View>
         {user &&
-          <View style={styles.flexItem}>
-            <AppBarTab name={'Create a review'} link={'/createreview'} />
-          </View>
+          <>
+            <View style={styles.flexItem}>
+              <AppBarTab name={'Create a review'} link={'/createreview'} />
+            </View>
+
+            <View style={styles.flexItem}>
+              <AppBarTab name={'My reviews'} link={'/myreviews'} />
+            </View>
+
+            <View style={styles.flexItem}>
+              <Pressable
+              onPress={logOut}
+              >
+                <Text color={'header'} fontWeight={'bold'}>Sign out</Text>
+              </Pressable>
+            </View>
+          </>
         }
-        <View style={styles.flexItem}>
-          {!user &&
-          <AppBarTab name={'Sign in'} link={'/login'} />
-          }
-          {user &&
-          <Pressable
-            onPress={logOut}
-          >
-            <Text color={'header'} fontWeight={'bold'}>Sign out</Text>
-          </Pressable>
-          }
-        </View>
-        <View style={styles.flexItem}>
-          {!user &&
-          <AppBarTab name={'Sign up'} link={'/register'} />
-          }
-        </View>
+
+        {!user &&
+          <>
+            <View style={styles.flexItem}>
+              <AppBarTab name={'Sign in'} link={'/login'} />
+            </View>
+
+            <View style={styles.flexItem}>
+              <AppBarTab name={'Sign up'} link={'/register'} />
+            </View>
+          </>        
+        }
       </ScrollView>
     </View>
   );

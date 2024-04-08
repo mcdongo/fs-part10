@@ -135,7 +135,7 @@ const RepositoryInfo = ({ item, singleEntry }) => {
 
 export default RepositoryInfo
 
-const ReviewItem = ({ review }) => {
+export const ReviewItem = ({ review, userReviews }) => {
   const createdAt = new Date(review.createdAt);
   const newDateString = `${createdAt.getDate()}.${createdAt.getMonth() + 1}.${createdAt.getFullYear()}`;
   return (
@@ -147,7 +147,16 @@ const ReviewItem = ({ review }) => {
       </View>
       <View style={styles.flexContainerVertical}>
         <View style={styles.flexItemB}>
-          <Text fontWeight={'bold'}>{review.user.username}</Text>
+          {userReviews &&
+            <Text fontWeight={'bold'}>
+              {review.repository.fullName}
+            </Text>
+          }
+          {!userReviews &&
+            <Text fontWeight={'bold'}>
+              {review.user.username}
+            </Text>
+          }
         </View>
         <View style={styles.flexItemB}>
           <Text>{newDateString}</Text>
@@ -180,7 +189,7 @@ export const SingleRepositoryItem = () => {
       renderItem={({ item }) => <ReviewItem review={item} />}
       keyExtractor={({ id }) => id}
       ItemSeparatorComponent={ItemSeparator}
-      ListHeaderComponent={() => <RepositoryInfo item={repository} />}
+      ListHeaderComponent={() => <RepositoryInfo item={repository} userReviews={false}/>}
     />
   )
   
