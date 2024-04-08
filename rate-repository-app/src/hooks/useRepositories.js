@@ -17,9 +17,13 @@ export const useSingleRepository = (id) => {
   return { repository, loading, error };
 }
 
-const useRepositories = () => {
+const useRepositories = (orderBy = 'CREATED_AT', orderDirection = 'DESC') => {
   const { data, error, loading } = useQuery(GET_REPOSITORIES, {
     fetchPolicy: 'cache-and-network',
+    variables: {
+      orderBy,
+      orderDirection
+    }
   });
 
   const repositories = loading === false
