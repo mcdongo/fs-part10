@@ -7,7 +7,7 @@ const theme = {
     primary: '#0366d6',
     backgroundColor: '#24292e',
     headerColor: 'white',
-    fillerColor: 'grey',
+    fillerColor: '#d3d3d3',
     errorText: '#d73a4a',
   },
   fontSizes: {

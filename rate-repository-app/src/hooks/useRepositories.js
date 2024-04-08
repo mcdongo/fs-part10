@@ -17,12 +17,13 @@ export const useSingleRepository = (id) => {
   return { repository, loading, error };
 }
 
-const useRepositories = (orderBy = 'CREATED_AT', orderDirection = 'DESC') => {
+const useRepositories = (orderBy = 'CREATED_AT', orderDirection = 'DESC', searchWord) => {
   const { data, error, loading } = useQuery(GET_REPOSITORIES, {
     fetchPolicy: 'cache-and-network',
     variables: {
       orderBy,
-      orderDirection
+      orderDirection,
+      searchKeyword: searchWord
     }
   });
 
